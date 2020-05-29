@@ -1,6 +1,7 @@
 package com.nowcoder.community.controller.Interceptor;
 
 //import com.nowcoder.community.annotation.LoginRequired;
+import com.nowcoder.community.annotation.LoginRequired;
 import com.nowcoder.community.util.HostHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,15 +20,15 @@ public class LoginRequiredInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-//        if(handler instanceof HandlerMethod){
-//            HandlerMethod handlerMethod = (HandlerMethod) handler;
-//            Method method = handlerMethod.getMethod();
-//            LoginRequired loginRequired = method.getAnnotation(LoginRequired.class);
-//            if(loginRequired != null && hostHolder.getUser() == null){ // 有注解且用户没登录
-//                response.sendRedirect(request.getContextPath() + "/login"); // 重定向到登录界面，getContextPath和直接从配置文件里面取都行
-//                return false;
-//            }
-//        }
+        if(handler instanceof HandlerMethod){
+            HandlerMethod handlerMethod = (HandlerMethod) handler;
+            Method method = handlerMethod.getMethod();
+            LoginRequired loginRequired = method.getAnnotation(LoginRequired.class);
+            if(loginRequired != null && hostHolder.getUser() == null){ // 有注解且用户没登录
+                response.sendRedirect(request.getContextPath() + "/login"); // 重定向到登录界面，getContextPath和直接从配置文件里面取都行
+                return false;
+            }
+        }
         return true;
     }
 }
