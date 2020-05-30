@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+// 拦截器相关配置
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer { // 一般来说配置类是声明一个第三方的Bean，但是拦截器这个有一些不一样，得实现一个接口
 
