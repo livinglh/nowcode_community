@@ -15,15 +15,29 @@ public class LikeService {
     private RedisTemplate redisTemplate;
 
     // 点赞
-    public void like(int userId, int entityType, int entityId){
-        String entityLikeKey = RedisKeyUtil.getEntityLikeKey(entityType, entityId);
-        boolean isMember = redisTemplate.opsForSet().isMember(entityLikeKey, userId);
+    // 点赞
+    public void like(int userId, int entityType, int entityId, int entityUserId){
+        redisTemplate.execute(new SessionCallback() {
+            @Override
+            public Object execute(RedisOperations operations) throws DataAccessException {
+                String entityLikeKey = RedisKeyUtil.getEntityLikeKey(entityType, entityId);
+                String userLikeKey = RedisKeyUtil.getUserLikeKey(entityUserId);
 
-        if(isMember){
-            redisTemplate.opsForSet().remove(entityLikeKey, userId);
-        }else{
-            redisTemplate.opsForSet().add(entityLikeKey, userId);
-        }
+                boolean isMember = operations.opsForSet().isMember(entityLikeKey, userId);
+                // 查询应在事务之外
+
+                operations.multi(); // 开启事务
+
+                if(isMember){
+                    operations.opsForSet().remove(entityLikeKey, userId);
+                    operations.opsForValue().decrement(userLikeKey);
+                }else{
+                    operations.opsForSet().add(entityLikeKey, userId);
+                    operations.opsForValue().increment(userLikeKey);
+                }
+                return operations.exec(); // 提交事务
+            }
+        });
     }
 
     // 查询实体点赞数量
