@@ -104,7 +104,7 @@ public class UserService implements CommunityConstant { // 需要用到常量，
         // http://localhost:8080/community/activation/101/code   101用户 code激活码
         String url = domain + contextPath + "/activation/" + user.getId() + "/" + user.getActivationCode();
         context.setVariable("url", url);
-        String content = templateEngine.process("/mail/activation", context);
+        String content = templateEngine.process("mail/activation", context);
         mailClient.sendMail(user.getEmail(), "激活账号", content);
         return map;
     }

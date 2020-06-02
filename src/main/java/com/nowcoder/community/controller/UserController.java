@@ -82,7 +82,7 @@ public class UserController implements CommunityConstant {
 
         model.addAttribute("uploadToken", uploadToken);
         model.addAttribute("fileName", fileName);
-        return "/site/setting";
+        return "site/setting";
     }
 
     // 更新头像路径
@@ -105,7 +105,7 @@ public class UserController implements CommunityConstant {
     public String uploadHeader(MultipartFile headerImage, Model model) { // 专有类型MultipartFile来接受图片
         if (headerImage == null) {
             model.addAttribute("error", "您还没有选择图片!");
-            return "/site/setting";
+            return "site/setting";
         }
 
         // 判断后缀是否合理
@@ -113,7 +113,7 @@ public class UserController implements CommunityConstant {
         String suffix = fileName.substring(fileName.lastIndexOf("."));
         if (StringUtils.isBlank(suffix)) {
             model.addAttribute("error", "文件的格式不正确!");
-            return "/site/setting";
+            return "site/setting";
         }
 
         // 生成随机文件名
@@ -170,7 +170,7 @@ public class UserController implements CommunityConstant {
         // 空值处理
         if(StringUtils.isBlank(oldPassword)){
             model.addAttribute("oldPasswordMsg", "原密码不能为空，请重新输入！");
-            return "/site/setting";
+            return "site/setting";
         }
         User user = hostHolder.getUser();
 
@@ -178,7 +178,7 @@ public class UserController implements CommunityConstant {
         oldPassword = CommunityUtil.md5(oldPassword + user.getSalt());
         if(!user.getPassword().equals(oldPassword)){
             model.addAttribute("oldPasswordMsg", "原密码错误，请重新输入！");
-            return "/site/setting";
+            return "site/setting";
         }
 
         newPassword = CommunityUtil.md5(newPassword + user.getSalt());
@@ -212,6 +212,6 @@ public class UserController implements CommunityConstant {
         }
         model.addAttribute("hasFollowed", hasFollowed);
 
-        return "/site/profile";
+        return "site/profile";
     }
 }

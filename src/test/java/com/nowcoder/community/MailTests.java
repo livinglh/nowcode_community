@@ -26,7 +26,7 @@ public class MailTests {
     public void testHtmlMail(){   //出错
         Context context = new Context();// thymeleaf的Context
         context.setVariable("username","sunday");
-        String content = templateEngine.process("/mail/demo",context);
+        String content = templateEngine.process("mail/demo",context);
         System.out.println(content);
         mailClient.sendMail("390866592@qq.com", "HTML",content);
     }
